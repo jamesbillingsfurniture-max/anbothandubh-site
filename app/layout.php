@@ -29,7 +29,7 @@ function page_head(array $p): void
 <link rel="canonical" href="<?= h($canonical) ?>">
 <?php if (!empty($p['noindex']) || !is_live()): ?><meta name="robots" content="noindex"><?php endif; ?>
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Bothán Dubh">
+<meta property="og:site_name" content="An Bothán Dubh">
 <meta property="og:title" content="<?= h($p['title']) ?>">
 <meta property="og:description" content="<?= h($p['description']) ?>">
 <meta property="og:url" content="<?= h($canonical) ?>">
@@ -53,7 +53,7 @@ function page_head(array $p): void
 <?php endif; ?>
 <div class="wrap">
   <header class="top">
-    <a href="/" class="brand" style="color:inherit;text-decoration:none">Bothán Dubh<small>Off-grid cabin · Ballina · Co. Mayo</small></a>
+    <a href="/" class="brand" style="color:inherit;text-decoration:none">An Bothán Dubh<small>Off-grid cabin · Ballina · Co. Mayo</small></a>
     <nav id="nav" aria-label="Main"><?php foreach ($nav as [$href, $label]): ?><a href="<?= $href ?>"<?= $href === $p['path'] ? ' aria-current="page"' : '' ?>><?= $label ?></a><?php endforeach; ?><a href="/book/" class="navbook"<?= str_starts_with($p['path'], '/book/') ? ' aria-current="page"' : '' ?>>Book direct</a></nav>
   </header>
 </div>
@@ -70,7 +70,7 @@ function page_foot(array $p, array $scripts = []): void
 <footer><div class="wrap">
   <div class="social"><span class="tag">#AnBothanDubh</span><span>Staying with us? Tag your photos so we can share them.</span><div class="share" id="share" data-site="<?= h($base) ?>"><b>Share:</b></div></div>
   <div class="social"><b style="color:var(--ink)">Follow us</b><a href="https://www.instagram.com/anbothandubh" target="_blank" rel="noopener">Instagram @anbothandubh</a><a href="https://www.facebook.com/anbothandubh" target="_blank" rel="noopener">Facebook @anbothandubh</a></div>
-  <div class="social"><span>Bothán Dubh · off-grid cabin, Attymass, Ballina, Co. Mayo</span><span>Book direct with the host · card payments by Stripe</span><span class="small">Fáilte Ireland short-term letting registration no.: <?= cfg('str_number') ? h(cfg('str_number')) : 'to follow' ?></span></div>
+  <div class="social"><span>An Bothán Dubh · off-grid cabin, Attymass, Ballina, Co. Mayo</span><span>Book direct with the host · card payments by Stripe</span><span class="small">Fáilte Ireland short-term letting registration no.: <?= cfg('str_number') ? h(cfg('str_number')) : 'to follow' ?></span></div>
 </div></footer>
 
 <nav class="tabbar" id="tabbar" aria-label="Main"><a href="/"<?= $cur('/') ?>><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="/the-cabin/"<?= $cur('/the-cabin/') ?>><svg viewBox="0 0 24 24"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>Cabin</a><a href="/things-to-do-ballina/"<?= $cur('/things-to-do-ballina/') ?>><svg viewBox="0 0 24 24"><path d="M3 20 9 8l4 7 3-4 5 9z"/><circle cx="17" cy="6" r="2"/></svg>Area</a><a href="/contact/" class="tb-wa"<?= $cur('/contact/') ?>><?= WA_SVG ?>Contact</a><a href="/book/" class="tb-book"<?= $cur('/book/') ?>><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a></nav>
@@ -92,7 +92,7 @@ function lodging_jsonld(): array
         '@context' => 'https://schema.org',
         '@type' => 'VacationRental',
         '@id' => $base . '/#cabin',
-        'name' => 'Bothán Dubh',
+        'name' => 'An Bothán Dubh',
         'description' => 'A solar-powered, off-grid cabin for two in Attymass, 7 km from Ballina, Co. Mayo. Dark skies, walks from the door, pets welcome.',
         'url' => $base . '/',
         'image' => [$base . '/photos/15.webp', $base . '/photos/37.webp', $base . '/photos/00.webp', $base . '/photos/29.webp', $base . '/photos/35.webp', $base . '/photos/39.webp', $base . '/photos/07.webp', $base . '/photos/38.webp'],

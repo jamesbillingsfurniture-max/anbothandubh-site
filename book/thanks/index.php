@@ -16,7 +16,7 @@ if ($b && $b['status'] === 'hold' && !is_demo() && !empty($_GET['session_id'])) 
     } catch (Throwable $e) { error_log('thanks page: ' . $e->getMessage()); }
 }
 
-$p = ['path' => '/book/thanks/', 'title' => 'Thank you | Bothán Dubh', 'description' => 'Booking confirmation.', 'noindex' => true];
+$p = ['path' => '/book/thanks/', 'title' => 'Thank you | An Bothán Dubh', 'description' => 'Booking confirmation.', 'noindex' => true];
 page_head($p);
 ?>
 <div class="wrap" style="max-width:640px;padding-block:24px 64px">

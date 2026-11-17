@@ -1,4 +1,4 @@
-# Bothán Dubh
+# An Bothán Dubh
 Options -Indexes
 DirectoryIndex index.php index.html
 ErrorDocument 404 /404.php

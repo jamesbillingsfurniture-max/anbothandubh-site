@@ -1,6 +1,6 @@
 <?php
 /*
- * Bothán Dubh: private settings.
+ * An Bothán Dubh: private settings.
  *
  * Copy this file to config.php (same folder) ON THE HOSTING ONLY and fill it in
  * using cPanel > File Manager > Edit. Never commit config.php, never paste keys in chat.
@@ -32,7 +32,7 @@ return [
     // Email
     'owner_email' => '',   // where booking alerts + Monday summary go (set in config.php)
     'from_email'  => 'bookings@anbothandubh.ie',         // must exist in cPanel > Email Accounts
-    'from_name'   => 'Bothán Dubh',
+    'from_name'   => 'An Bothán Dubh',
     // 'send' = really send, 'log' = save emails as files in data/outbox (for testing)
     'mail_mode'   => 'log',
     // Optional fallback if hosting mail is unreliable: Resend API key (free tier).

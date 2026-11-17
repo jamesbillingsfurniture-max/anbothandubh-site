@@ -3,7 +3,7 @@ require dirname(__DIR__) . '/app/bootstrap.php';
 require APP_DIR . '/layout.php';
 $p = [
     'path' => '/things-to-do-ballina/',
-    'title' => 'Things to Do near Ballina, Co. Mayo | Bothán Dubh',
+    'title' => 'Things to Do near Ballina, Co. Mayo | An Bothán Dubh',
     'description' => 'Walks from the door, salmon and coarse fishing, Dark Sky Park stargazing, Enniscrone surf and Wild Atlantic Way day trips from our off-grid cabin near Ballina.',
     'image' => '/photos/16.webp',
     'jsonld' => [],

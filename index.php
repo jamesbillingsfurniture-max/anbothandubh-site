@@ -3,7 +3,7 @@ require __DIR__ . '/app/bootstrap.php';
 require APP_DIR . '/layout.php';
 $p = [
     'path' => '/',
-    'title' => 'Bothán Dubh | Off-Grid Cabin near Ballina, Co. Mayo',
+    'title' => 'An Bothán Dubh | Off-Grid Cabin near Ballina, Co. Mayo',
     'description' => 'Solar-powered off-grid cabin for two in Attymass, 7 km from Ballina, Mayo. Dark skies, walks from the door, pets welcome. Book direct, no service fee.',
     'jsonld' => [lodging_jsonld()],
 ];
@@ -18,7 +18,7 @@ page_head($p);
       <div class="hero-cta"><a href="/book/" class="cta">Check dates &amp; book</a><a href="/the-cabin/" class="cta ghost">See the cabin</a></div>
     </div>
   </div>
-  <p class="small" style="margin:14px 0 0"><b>Bothán Dubh</b> (say it <i>“bo-HAWN duv”</i>) is Irish for <i>the black cabin</i>.</p>
+  <p class="small" style="margin:14px 0 0"><b>An Bothán Dubh</b> (say it <i>“un bo-HAWN duv”</i>) is Irish for <i>the black cabin</i>.</p>
   <div class="ratings" style="margin-top:12px"><span class="rating"><b>★ 4.97</b> 34 Airbnb reviews · Superhost</span><span class="rating"><b>9.5</b> Exceptional · 17 Booking.com reviews</span></div>
 
   <section class="hl">
@@ -39,7 +39,7 @@ page_head($p);
   </section>
 
   <section>
-    <h2>What guests say about Bothán Dubh</h2>
+    <h2>What guests say about An Bothán Dubh</h2>
     <div class="reviews">
       <figure><blockquote>“The location was beautiful, so peaceful. The cabin was spotlessly clean and lovely decor. The host made us feel so welcome with a nice hand written note and fresh lemon water on arrival!”</blockquote><figcaption>Caroline, United Kingdom · Booking.com</figcaption></figure>
       <figure><blockquote>“The cabin was extremely cosy and had fabulous facilities! The shower was amazing, the bed was very very comfy. The decking is a beautiful spot for coffee in the morning.”</blockquote><figcaption>Ryan, United Kingdom · Booking.com</figcaption></figure>

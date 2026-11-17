@@ -22,13 +22,13 @@ function send_booking_emails(array $b, bool $clash = false): void
 
     // Guest confirmation
     $title = 'You\'re booked, ' . $first;
-    $intro = '<p>Thank you for booking Bothán Dubh direct. Your stay is confirmed and paid.</p>';
+    $intro = '<p>Thank you for booking An Bothán Dubh direct. Your stay is confirmed and paid.</p>';
     $after = '<p><b>What happens next.</b> Two days before you arrive we\'ll email you the lockbox code and directions. Check-in is self check-in from 3pm to 9pm.</p>'
         . '<p><b>Good to know.</b> The cabin runs on solar power: one socket, up to 500 watts, so please don\'t plug in high-power items like hair dryers or kettles (there\'s a kettle for the gas hob). No Wi-Fi or TV, but good phone signal. Our sheepdog Sadie and our cat live with us at our house and may wander over: please don\'t feed them or let them in.</p>'
         . '<p><b>Cancellation.</b> Free cancellation with a full refund within 24 hours of booking. After that, the booking is non-refundable.</p>'
         . '<p>Questions? Just reply to this email or <a href="' . $wa . '" style="color:#7A3D4B">message us on WhatsApp</a> (086 346 8725).</p>';
     $rows = booking_rows($b);
-    send_mail($b['email'], "Booking confirmed: Bothán Dubh, " . nice_date($b['arrive'], false) . ' (' . $b['ref'] . ')',
+    send_mail($b['email'], "Booking confirmed: An Bothán Dubh, " . nice_date($b['arrive'], false) . ' (' . $b['ref'] . ')',
         email_layout($title, $intro, $rows, $after), email_text($title, $intro, $rows, $after));
 
     // Owner alert
@@ -65,7 +65,7 @@ function send_lockbox_email(array $b): bool
         . '<p><b>Sadie and the cat.</b> Our sheepdog Sadie and our cat live with us at our house. Sadie is friendly and may come over to say hello. Please don\'t feed her or the cat, or let them into the cabin.</p>'
         . '<p>Running late or need anything? <a href="https://wa.me/353863468725" style="color:#7A3D4B">WhatsApp us</a> on 086 346 8725.</p>'
         . '<p>Enjoy the quiet, and if you take photos, tag them <b>#AnBothanDubh</b>.</p>';
-    return send_mail($b['email'], 'Your arrival at Bothán Dubh: lockbox code and directions',
+    return send_mail($b['email'], 'Your arrival at An Bothán Dubh: lockbox code and directions',
         email_layout($title, $intro, $rows, $after), email_text($title, $intro, $rows, $after));
 }
 

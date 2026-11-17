@@ -139,5 +139,5 @@ function weekly_summary(): array
 
     $title = 'Your week on anbothandubh.ie';
     $full = email_layout($title, $html);
-    return ['subject' => 'Bothán Dubh weekly: ' . $now['visitors'] . ' visitors, ' . $now['funnel']['Paid'] . ' bookings', 'html' => $full, 'text' => email_text($title, $html)];
+    return ['subject' => 'An Bothán Dubh weekly: ' . $now['visitors'] . ' visitors, ' . $now['funnel']['Paid'] . ' bookings', 'html' => $full, 'text' => email_text($title, $html)];
 }

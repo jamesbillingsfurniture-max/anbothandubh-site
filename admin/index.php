@@ -38,11 +38,11 @@ if ($in && $_SERVER['REQUEST_METHOD'] === 'POST' && hash_equals($_SESSION['csrf'
 
 if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
 ?><!doctype html><html lang="en-IE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>Admin | Bothán Dubh</title><link rel="stylesheet" href="/assets/style.css">
+<title>Admin | An Bothán Dubh</title><link rel="stylesheet" href="/assets/style.css">
 <style>.wrap{max-width:900px;padding-block:24px 60px}table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
 .pill{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--booked)}.pill.paid{background:var(--olive);color:var(--onaccent)}form.inline{display:inline}form.inline button{font:inherit;font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0}code{word-break:break-all;font-size:13px}.scroll{overflow-x:auto}</style></head><body><div class="wrap">
-<h1 style="font-size:30px">Bothán Dubh admin</h1>
+<h1 style="font-size:30px">An Bothán Dubh admin</h1>
 <?php if (!$in): ?>
   <form method="post" class="pay" style="max-width:320px"><label class="lbl" for="pw">Password</label><input id="pw" type="password" name="password" autofocus><?php if ($err): ?><div class="err"><?= h($err) ?></div><?php endif; ?><button class="btn">Log in</button></form>
 <?php else:

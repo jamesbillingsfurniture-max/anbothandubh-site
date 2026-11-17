@@ -4,7 +4,7 @@ require APP_DIR . '/layout.php';
 $p = [
     'path' => '/the-cabin/',
     'title' => 'The Cabin | Pet-Friendly Off-Grid Cabin, Ballina, Mayo',
-    'description' => 'Inside Bothán Dubh: a 19 m² solar-powered cabin for two with hot shower, gas stove, deck and private garden. Dogs welcome, €10 a night however many pets.',
+    'description' => 'Inside An Bothán Dubh: a 19 m² solar-powered cabin for two with hot shower, gas stove, deck and private garden. Dogs welcome, €10 a night however many pets.',
     'image' => '/photos/29.webp',
     'jsonld' => [lodging_jsonld()],
 ];

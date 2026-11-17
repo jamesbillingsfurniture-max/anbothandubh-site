@@ -35,13 +35,13 @@ function stripe_checkout_session(array $b): array
         'customer_email' => $b['email'],
         'client_reference_id' => $b['ref'],
         'metadata' => ['ref' => $b['ref']],
-        'payment_intent_data' => ['description' => "Bothán Dubh {$b['ref']}: $desc", 'metadata' => ['ref' => $b['ref']]],
+        'payment_intent_data' => ['description' => "An Bothán Dubh {$b['ref']}: $desc", 'metadata' => ['ref' => $b['ref']]],
         'line_items' => [[
             'quantity' => 1,
             'price_data' => [
                 'currency' => 'eur',
                 'unit_amount' => (int) $b['amount_cents'],
-                'product_data' => ['name' => 'Bothán Dubh: ' . $desc],
+                'product_data' => ['name' => 'An Bothán Dubh: ' . $desc],
             ],
         ]],
         'expires_at' => time() + 31 * 60,

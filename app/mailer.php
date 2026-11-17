@@ -56,13 +56,13 @@ function email_layout(string $title, string $intro, array $rows = [], string $af
     }
     return '<!doctype html><html><body style="margin:0;background:#F2F0EC;font-family:Helvetica,Arial,sans-serif;color:#1E2023;line-height:1.55">'
         . '<div style="max-width:560px;margin:0 auto;padding:24px 16px">'
-        . '<div style="font-family:Georgia,serif;font-size:22px;margin-bottom:16px">Bothán Dubh</div>'
+        . '<div style="font-family:Georgia,serif;font-size:22px;margin-bottom:16px">An Bothán Dubh</div>'
         . '<div style="background:#fff;border:1px solid #DDD9D2;border-radius:12px;padding:22px">'
         . '<h1 style="font-family:Georgia,serif;font-weight:400;font-size:24px;margin:0 0 12px">' . h($title) . '</h1>'
         . $intro
         . ($t ? '<table style="width:100%;border-collapse:collapse;font-size:15px;margin:14px 0">' . $t . '</table>' : '')
         . $after . '</div>'
-        . '<p style="font-size:12px;color:#5E5F5C;margin-top:16px">Bothán Dubh · off-grid cabin · Attymass, Ballina, Co. Mayo · WhatsApp 086 346 8725</p>'
+        . '<p style="font-size:12px;color:#5E5F5C;margin-top:16px">An Bothán Dubh · off-grid cabin · Attymass, Ballina, Co. Mayo · WhatsApp 086 346 8725</p>'
         . '</div></body></html>';
 }
 
@@ -72,5 +72,5 @@ function email_text(string $title, string $intro, array $rows = [], string $afte
     $s = "$title\n\n" . trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>'], ["\n\n", "\n"], $intro)))) . "\n\n";
     foreach ($rows as [$k, $v]) $s .= "$k: $v\n";
     if ($after) $s .= "\n" . trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '</li>'], ["\n\n", "\n", "\n"], $after)))) . "\n";
-    return $s . "\nBothán Dubh, Attymass, Ballina, Co. Mayo. WhatsApp 086 346 8725\n";
+    return $s . "\nAn Bothán Dubh, Attymass, Ballina, Co. Mayo. WhatsApp 086 346 8725\n";
 }

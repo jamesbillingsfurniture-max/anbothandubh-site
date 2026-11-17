@@ -1,4 +1,4 @@
-# Bothán Dubh website
+# An Bothán Dubh website
 
 Public website files for https://anbothandubh.ie, deployed with cPanel Git Version Control.
 

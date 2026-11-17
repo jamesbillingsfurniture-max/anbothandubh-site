@@ -8,8 +8,8 @@ if (!empty($_GET['cancelled']) && preg_match('/^BD-[A-Z0-9]{6}$/', $_GET['cancel
 }
 $p = [
     'path' => '/book/',
-    'title' => 'Book Bothán Dubh Direct | Off-Grid Cabin, Ballina, Mayo',
-    'description' => 'Check availability and book Bothán Dubh direct: €130 a night Mon to Thu, €140 Fri to Sun, no cleaning fee and no booking-site service fee. Pets €10 a night.',
+    'title' => 'Book An Bothán Dubh Direct | Off-Grid Cabin, Ballina, Mayo',
+    'description' => 'Check availability and book An Bothán Dubh direct: €130 a night Mon to Thu, €140 Fri to Sun, no cleaning fee and no booking-site service fee. Pets €10 a night.',
     'image' => '/photos/00.webp',
 ];
 page_head($p);

@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /book/thanks/
+Sitemap: https://anbothandubh.ie/sitemap.xml

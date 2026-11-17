@@ -3,6 +3,11 @@
 declare(strict_types=1);
 date_default_timezone_set('Europe/Dublin');
 
+// The hosting runs PHP 7.4: small stand-ins for PHP 8 functions.
+if (!function_exists('str_starts_with')) {
+    function str_starts_with(string $h, string $n): bool { return $n === '' || strncmp($h, $n, strlen($n)) === 0; }
+}
+
 define('APP_DIR', __DIR__);
 define('SITE_DIR', dirname(__DIR__));
 define('DATA_DIR', getenv('BD_DATA_DIR') ?: SITE_DIR . '/data');

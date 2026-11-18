@@ -43,7 +43,7 @@ page_head($p);
     <h2>What guests say about An Bothán Dubh</h2>
     <div class="reviews">
       <?php $pool = $R['reviews']; shuffle($pool); foreach (array_slice($pool, 0, 3) as $rv): ?>
-      <figure><blockquote>“<?= h($rv[0]) ?>”</blockquote><figcaption><?= h($rv[1]) ?>, <?= h($rv[2]) ?> · <?= h($rv[3]) ?></figcaption></figure>
+      <figure><blockquote>“<?= h($rv[0]) ?>”</blockquote><figcaption><?= h($rv[1]) ?><?= $rv[2] !== '' ? ', ' . h($rv[2]) : '' ?> · <?= h($rv[3]) ?></figcaption></figure>
       <?php endforeach; ?>
     </div>
     <?php if (cfg('google_review_url')): ?><p style="margin-top:16px"><a class="cta ghost" href="<?= h(cfg('google_review_url')) ?>" target="_blank" rel="noopener">Stayed with us? Leave a Google review</a></p><?php endif; ?>

@@ -29,33 +29,70 @@ function night_info(DateTimeImmutable $night): array
     foreach (special_rates() as $r) {
         if ($ymd >= $r['start'] && $ymd < $r['end_excl']) {
             return ['price' => (int) $r['price'], 'base' => $base, 'offer' => (bool) $r['offer'] && (int) $r['price'] < $base,
-                'label' => (string) $r['label'], 'min' => $r['min_nights'] ? (int) $r['min_nights'] : null];
+                'label' => (string) $r['label'], 'min' => $r['min_nights'] ? (int) $r['min_nights'] : null, 'special' => true];
         }
     }
-    return ['price' => $base, 'base' => $base, 'offer' => false, 'label' => '', 'min' => null];
+    return ['price' => $base, 'base' => $base, 'offer' => false, 'label' => '', 'min' => null, 'special' => false];
 }
 
 function night_rate(DateTimeImmutable $night): int { return night_info($night)['price']; }
 
 function nonref_pct(): int { return max(0, min(50, (int) cfg('nonref_discount'))); }
 
-/** Price breakdown in cents for arrive..depart (depart is not a night). */
-function quote(string $arrive, string $depart, bool $pets, string $rateType = 'flexible'): array
+/** Discount settings: set in /admin/ (database), otherwise from the settings file. 0 = off. */
+function disc(string $k): int
+{
+    $v = kv_get('disc_' . $k);
+    return $v !== null && $v !== '' ? (int) $v : (int) cfg('disc_' . $k);
+}
+
+/** Stay discounts that apply to this stay, booked today: [[label, percent], ...]. */
+function stay_discounts(string $arrive, int $nights, ?DateTimeImmutable $today = null): array
+{
+    $today = $today ?? today();
+    $a = new DateTimeImmutable($arrive);
+    $out = [];
+    $daysAway = (int) $today->diff($a)->format('%r%a');
+    if (disc('lm_pct') > 0 && $daysAway <= disc('lm_days')) $out[] = ['Last-minute discount', disc('lm_pct')];
+    elseif (disc('eb_pct') > 0 && $a >= $today->modify('+' . disc('eb_months') . ' month')) $out[] = ['Early booking discount', disc('eb_pct')];
+    if (disc('week_pct') > 0 && $nights >= max(2, disc('week_nights'))) $out[] = ['Weekly discount', disc('week_pct')];
+    return $out;
+}
+
+/**
+ * Price breakdown in cents for arrive..depart (depart is not a night).
+ * Stay discounts apply to normal-price nights only (never special-price dates);
+ * the non-refundable % applies on top; all discounts together are capped at disc_max_pct.
+ */
+function quote(string $arrive, string $depart, bool $pets, string $rateType = 'flexible', ?DateTimeImmutable $today = null): array
 {
     $a = new DateTimeImmutable($arrive); $d = new DateTimeImmutable($depart);
-    $lines = []; $sub = 0; $n = 0; $saved = 0;
+    $lines = []; $sub = 0; $n = 0; $saved = 0; $eligible = 0;
     for ($x = $a; $x < $d; $x = $x->modify('+1 day')) {
         $i = night_info($x);
         $lines[$i['price']] = ($lines[$i['price']] ?? 0) + 1;
         $sub += $i['price'] * 100; $n++;
         if ($i['offer']) $saved += ($i['base'] - $i['price']) * 100;
+        if (!$i['special']) $eligible += $i['price'] * 100;
     }
     $petTotal = $pets ? $n * (int) cfg('pet_fee') * 100 : 0;
     $before = $sub + $petTotal;
-    $disc = $rateType === 'nonref' ? (int) round($before * nonref_pct() / 100) : 0;
+    $discounts = [];
+    $stay = 0;
+    foreach (stay_discounts($arrive, $n, $today) as [$label, $pct]) {
+        $c = (int) round($eligible * $pct / 100);
+        if ($c > 0) { $discounts[] = [$label . ' (' . $pct . '%)', $c]; $stay += $c; }
+    }
+    $nonref = $rateType === 'nonref' ? (int) round(($before - $stay) * nonref_pct() / 100) : 0;
+    $max = disc('max_pct') > 0 ? (int) round($before * disc('max_pct') / 100) : PHP_INT_MAX;
+    if ($stay > $max) { // cap the stay discounts themselves
+        $scale = $max / $stay; $stay = 0;
+        foreach ($discounts as $k => $dl) { $discounts[$k][1] = (int) floor($dl[1] * $scale); $stay += $discounts[$k][1]; }
+    }
+    if ($stay + $nonref > $max) $nonref = max(0, $max - $stay);
     ksort($lines);
     return ['nights' => $n, 'by_rate' => $lines, 'pet_cents' => $petTotal, 'offer_saved_cents' => $saved,
-        'nonref_cents' => $disc, 'total_cents' => $before - $disc, 'rate_type' => $rateType];
+        'discounts' => $discounts, 'nonref_cents' => $nonref, 'total_cents' => $before - $stay - $nonref, 'rate_type' => $rateType];
 }
 
 function today(): DateTimeImmutable { return new DateTimeImmutable('today'); }

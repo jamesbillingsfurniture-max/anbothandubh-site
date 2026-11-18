@@ -40,6 +40,11 @@ if ($in && $_SERVER['REQUEST_METHOD'] === 'POST' && hash_equals($_SESSION['csrf'
         foreach (['weekday', 'weekend'] as $w) { $v = (int) ($_POST[$w] ?? 0); if ($v >= 20 && $v <= 2000) kv_set('rate_' . $w, (string) $v); }
         $flash = 'Normal prices saved.';
     }
+    if ($do === 'discounts') {
+        $lim = ['lm_pct' => [0, 50], 'lm_days' => [0, 30], 'eb_pct' => [0, 50], 'eb_months' => [1, 12], 'week_pct' => [0, 50], 'week_nights' => [2, 27], 'max_pct' => [0, 50]];
+        foreach ($lim as $k => [$lo, $hi]) { if (isset($_POST[$k]) && $_POST[$k] !== '') kv_set('disc_' . $k, (string) max($lo, min($hi, (int) $_POST[$k]))); }
+        $flash = 'Discounts saved.';
+    }
     if ($do === 'add_rate') {
         $from = $date('first'); $to = $date('last'); $price = (int) ($_POST['price'] ?? 0);
         if ($from && $to && $to >= $from && $price >= 20 && $price <= 2000) {
@@ -110,6 +115,17 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
     <label class="small">Mon–Thu nights €<br><input type="number" name="weekday" min="20" max="2000" value="<?= base_rate('weekday') ?>" style="width:90px"></label>
     <label class="small">Fri–Sun nights €<br><input type="number" name="weekend" min="20" max="2000" value="<?= base_rate('weekend') ?>" style="width:90px"></label>
     <button>Save normal prices</button></form>
+  <h3 style="font-size:16px;margin-top:18px">Discounts (0 = off)</h3>
+  <form method="post" class="inline" style="display:flex;flex-wrap:wrap;gap:10px;align-items:end"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><input type="hidden" name="do" value="discounts">
+    <label class="small">Last-minute %<br><input type="number" name="lm_pct" min="0" max="50" value="<?= disc('lm_pct') ?>" style="width:70px"></label>
+    <label class="small">…if arriving within (days)<br><input type="number" name="lm_days" min="0" max="30" value="<?= disc('lm_days') ?>" style="width:70px"></label>
+    <label class="small">Early booking %<br><input type="number" name="eb_pct" min="0" max="50" value="<?= disc('eb_pct') ?>" style="width:70px"></label>
+    <label class="small">…if booked ahead (months)<br><input type="number" name="eb_months" min="1" max="12" value="<?= disc('eb_months') ?>" style="width:70px"></label>
+    <label class="small">Weekly %<br><input type="number" name="week_pct" min="0" max="50" value="<?= disc('week_pct') ?>" style="width:70px"></label>
+    <label class="small">…for stays of (nights)<br><input type="number" name="week_nights" min="2" max="27" value="<?= disc('week_nights') ?>" style="width:70px"></label>
+    <label class="small">Max total discount %<br><input type="number" name="max_pct" min="0" max="50" value="<?= disc('max_pct') ?>" style="width:70px"></label>
+    <button>Save discounts</button></form>
+  <p class="small">Discounts never apply to special-price dates. The non-refundable rate (<?= nonref_pct() ?>% off) adds on top, but all discounts together never go over the maximum.</p>
   <h3 style="font-size:16px;margin-top:18px">Special prices for dates (e.g. Christmas, or an offer)</h3>
   <table><?php foreach ($rates as $r): ?><tr><td><?= h(nice_date($r['start'], false)) ?> → last night <?= h($last($r['end_excl'])) ?></td><td>€<?= (int) $r['price'] ?>/night<?= $r['offer'] ? ' <span class="pill paid">offer</span>' : '' ?><?= $r['min_nights'] ? ' · min ' . (int) $r['min_nights'] . ' nights' : '' ?></td><td class="small"><?= h($r['label']) ?></td><td><form class="inline" method="post"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><input type="hidden" name="do" value="del_rate"><input type="hidden" name="id" value="<?= (int) $r['id'] ?>"><button>Remove</button></form></td></tr><?php endforeach; if (!$rates): ?><tr><td class="small">None yet.</td></tr><?php endif; ?></table>
   <form method="post" class="inline" style="display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-top:10px"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><input type="hidden" name="do" value="add_rate">

@@ -60,6 +60,14 @@ return [
     'min_nights'       => 2,
     'max_nights'       => 27,   // 28+ nights = long stay, by WhatsApp
     'nonref_discount'  => 10,   // % off for the non-refundable rate
+    // Discounts (normally changed in /admin/). Match Airbnb. 0 = off. Never on special-price dates.
+    'disc_lm_pct'      => 20,   // last-minute % ...
+    'disc_lm_days'     => 1,    // ... if arrival is within this many days
+    'disc_eb_pct'      => 10,   // early booking % ...
+    'disc_eb_months'   => 2,    // ... if booked this many months ahead
+    'disc_week_pct'    => 10,   // weekly % ...
+    'disc_week_nights' => 7,    // ... for stays of this many nights or more
+    'disc_max_pct'     => 20,   // all discounts together never more than this
     'months_ahead'     => 12,
     'min_days_notice'  => 1,    // 1 = earliest arrival is tomorrow
 ];

@@ -12,7 +12,7 @@
   const add=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
   const fmt=d=>d.toLocaleDateString("en-IE",{weekday:"short",day:"numeric",month:"short"});
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const info=d=>{const w=d.getDay(),base=(w===5||w===6||w===0)?A.rate_weekend:A.rate_weekday,k=ymd(d);
+  const info=d=>{const w=d.getDay(),base=(w===5||w===6)?A.rate_weekend:A.rate_weekday,k=ymd(d);
     for(const s of (A.specials||[])){ if(k>=s.s&&k<s.e) return {p:s.p,base,o:s.o&&s.p<base,m:s.m,sp:true}; }
     return {p:base,base,o:false,m:null,sp:false}};
   const rate=d=>info(d).p;

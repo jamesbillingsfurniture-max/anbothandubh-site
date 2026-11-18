@@ -30,7 +30,7 @@ page_head($p);
           <div><h3>House rules</h3><p>Up to 2 guests. Pets welcome. No smoking or vaping on or near the property. No parties. Quiet hours 10pm to 7am.</p></div>
           <div><h3>Pets</h3><p>€10 per night, however many pets you bring. Dogs off the bed, please.</p></div>
           <div><h3>Cancellation</h3><p>Choose your rate when you book.</p><p><b>Flexible:</b> full refund up to 5 days before check-in. After that, the first night is non-refundable and 50% of the other nights is refunded.</p><p><b>Non-refundable:</b> <?= nonref_pct() ?>% cheaper, no refund.</p><p>Both: free cancellation within 24 hours of booking if you booked at least 7 days before check-in.</p></div>
-          <div><h3>Prices</h3><p>From €<?= base_rate('weekday') ?> a night Monday to Thursday, €<?= base_rate('weekend') ?> a night Friday to Sunday. Some dates have special prices. Minimum <?= (int) cfg('min_nights') ?> nights. No cleaning fee.</p></div>
+          <div><h3>Prices</h3><p>From €<?= base_rate('weekday') ?> a night Sunday to Thursday, €<?= base_rate('weekend') ?> a night Friday and Saturday. Some dates have special prices. Minimum <?= (int) cfg('min_nights') ?> nights. No cleaning fee.</p></div>
           <div><h3>Payment</h3><p>Pay in full by card through Stripe. You get a confirmation email straight away, and the lockbox code 2 days before you arrive.</p></div>
         </div>
       </section>

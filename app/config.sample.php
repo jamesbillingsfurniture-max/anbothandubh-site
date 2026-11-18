@@ -54,8 +54,8 @@ return [
     'str_number' => '',
 
     // Booking rules (normally leave as they are)
-    'rate_weekday'     => 130,  // Mon-Thu nights
-    'rate_weekend'     => 140,  // Fri, Sat, Sun nights
+    'rate_weekday'     => 130,  // Sun-Thu nights
+    'rate_weekend'     => 140,  // Fri + Sat nights
     'pet_fee'          => 10,   // per night, however many pets
     'min_nights'       => 2,
     'max_nights'       => 27,   // 28+ nights = long stay, by WhatsApp

@@ -112,8 +112,8 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
   <?php $rates = db()->query("SELECT * FROM rates WHERE end_excl >= date('now') ORDER BY start")->fetchAll(); $blocks = db()->query("SELECT * FROM blocks WHERE end_excl >= date('now') ORDER BY start")->fetchAll(); $last = function ($e) { return nice_date((new DateTimeImmutable($e))->modify('-1 day')->format('Y-m-d'), false); }; ?>
   <div class="box"><h2 style="font-size:20px">Prices</h2>
   <form method="post" class="inline" style="display:flex;flex-wrap:wrap;gap:10px;align-items:end"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><input type="hidden" name="do" value="prices">
-    <label class="small">Mon–Thu nights €<br><input type="number" name="weekday" min="20" max="2000" value="<?= base_rate('weekday') ?>" style="width:90px"></label>
-    <label class="small">Fri–Sun nights €<br><input type="number" name="weekend" min="20" max="2000" value="<?= base_rate('weekend') ?>" style="width:90px"></label>
+    <label class="small">Sun–Thu nights €<br><input type="number" name="weekday" min="20" max="2000" value="<?= base_rate('weekday') ?>" style="width:90px"></label>
+    <label class="small">Fri–Sat nights €<br><input type="number" name="weekend" min="20" max="2000" value="<?= base_rate('weekend') ?>" style="width:90px"></label>
     <button>Save normal prices</button></form>
   <h3 style="font-size:16px;margin-top:18px">Discounts (0 = off)</h3>
   <form method="post" class="inline" style="display:flex;flex-wrap:wrap;gap:10px;align-items:end"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><input type="hidden" name="do" value="discounts">

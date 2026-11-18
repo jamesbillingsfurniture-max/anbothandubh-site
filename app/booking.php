@@ -24,7 +24,7 @@ function special_rates(bool $fresh = false): array
 function night_info(DateTimeImmutable $night): array
 {
     $w = (int) $night->format('N'); // 1 Mon .. 7 Sun
-    $base = $w >= 5 ? base_rate('weekend') : base_rate('weekday');
+    $base = ($w === 5 || $w === 6) ? base_rate('weekend') : base_rate('weekday'); // Fri + Sat nights = weekend (matches Airbnb)
     $ymd = $night->format('Y-m-d');
     foreach (special_rates() as $r) {
         if ($ymd >= $r['start'] && $ymd < $r['end_excl']) {

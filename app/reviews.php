@@ -32,7 +32,7 @@ return [
         ['Cozy, tranquil, great location with amenities nearby if needed. Very few lights in the area which gave us impressive views of the night sky. The gas fire was very impressive; great heat throughout the cabin in minutes. Instant hot water, fab shower. We slept very comfortably.', 'Jerome', 'Cork, Ireland', 'Airbnb'],
         ['Amazing cabin, peaceful and perfect for a weekend escape. The stove was so warm and all the linens and furnishings were of such high quality. We will definitely stay again!', 'Lauren', '', 'Airbnb'],
         ['The location was beautiful, so peaceful. The cabin was spotlessly clean and lovely decor. So nice to have those views from the window near the bed. The host made us feel so welcome with a nice hand written note and fresh lemon water on arrival!', 'Caroline', 'United Kingdom', 'Booking.com'],
-        ['The cabin was extremely cosy and had fabulous facilities! The shower was amazing, the bed was very very comfy. The decking is a beautiful spot for coffee in the morning.', 'Ryan', 'United Kingdom', 'Booking.com'],
+        ['The cabin was extremely cosy and had fabulous facilities! The shower was amazing, the bed was very very comfy and the cooking facilities were lovely. The decking is a beautiful spot for coffee in the morning and the area was beautiful and quiet. Would love to stay here again!', 'Ryan', 'United Kingdom', 'Booking.com'],
         ['It was a lovely spot, quiet and serene. We loved Sadie! The decor was great, good selection of books.', 'Kirstine', 'Australia', 'Booking.com'],
         ['Absolutely stunning location. The cabin was warm, cozy and a wonderful place to recharge. It was clean, quiet and had all the amenities needed for a quiet getaway. There is a lot to explore in the area. The hosts were wonderful and quick to answer questions.', 'Michelle', 'Australia', 'Booking.com'],
         ['This small but super charming cabin is located in an idyllic rural setting and includes everything you need. Kitchen with gas stove, hot water boiler, gas fireplace and nice seating. The hostess has furnished this cabin very tastefully and lovingly.', 'Daniel', 'Austria', 'Booking.com'],
@@ -40,5 +40,9 @@ return [
         ['Delightful little cabin, quiet and cosy, ideal for a restful couple of days.', 'Mandy', 'Australia', 'Booking.com'],
         ['Need an escape, this is the place! Loved the peace and tranquility of the area. The tiny cabin had everything we needed and was very comfortable.', 'Aine', 'Ireland', 'Booking.com'],
         ['Delightful, comfortable and warm cabin. Away from the hustle and bustle. Just what we needed.', 'Lisa', 'Ireland', 'Booking.com'],
+        ['Very peaceful place and very well equipped cabin, very comfortable bed and cozy fireplace. Very rural area with a lot of nice wildlife.', 'Aishling', 'Ireland', 'Booking.com'],
+        ['Perfect place for a relaxing getaway. Very cosy.', 'Saibh', 'Ireland', 'Booking.com'],
+        ['Little cozy solar powered cabin in a quiet countryside. Perfect for a resting break to chill off the grid (good phone reception!).', 'Elise', 'Ireland', 'Booking.com'],
+        ['Peace with views. Friendly and helpful people.', 'Jessica', 'Ireland', 'Booking.com'],
     ],
 ];

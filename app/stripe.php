@@ -28,7 +28,7 @@ function stripe_checkout_session(array $b): array
 {
     $base = rtrim((string) cfg('base_url'), '/');
     $desc = $b['nights'] . ' nights, ' . nice_date($b['arrive'], false) . ' to ' . nice_date($b['depart']) . ', '
-        . $b['guests'] . ' guest' . ($b['guests'] > 1 ? 's' : '') . ($b['pets'] ? ' + pets' : '');
+        . $b['guests'] . ' guest' . ($b['guests'] > 1 ? 's' : '') . ($b['pets'] ? ' + pets' : '') . (($b['rate_type'] ?? '') === 'nonref' ? ', non-refundable rate' : ', flexible rate');
     return stripe_request('POST', 'checkout/sessions', [
         'mode' => 'payment',
         'locale' => 'en',

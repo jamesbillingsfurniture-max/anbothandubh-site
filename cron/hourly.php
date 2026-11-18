@@ -6,6 +6,7 @@ require dirname(__DIR__) . '/app/bootstrap.php';
 $cal = ical_refresh(true);
 expire_holds();
 $sent = send_due_lockbox_emails();
+$thanks = send_due_thankyou_emails();
 
 // Tell James once a day if a calendar keeps failing to download.
 $bad = array_keys(array_filter($cal, fn($ok) => !$ok));
@@ -16,4 +17,4 @@ if ($bad && kv_get('ical_alert_day') !== date('Y-m-d')) {
 }
 // Keep stats for 2 years only.
 db()->prepare('DELETE FROM hits WHERE ts < ?')->execute([strtotime('-2 years')]);
-echo date('c') . " calendars: " . json_encode($cal) . " lockbox emails sent: $sent\n";
+echo date('c') . " calendars: " . json_encode($cal) . " lockbox emails sent: $sent, thank-you emails sent: $thanks\n";

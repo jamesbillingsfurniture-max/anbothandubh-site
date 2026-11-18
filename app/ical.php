@@ -114,6 +114,15 @@ function ical_export(): string
         $lines[] = 'SUMMARY:Booked direct (' . $r['ref'] . ')';
         $lines[] = 'END:VEVENT';
     }
+    foreach (db()->query("SELECT id, start, end_excl FROM blocks WHERE end_excl >= date('now','-1 day') ORDER BY start")->fetchAll() as $r) {
+        $lines[] = 'BEGIN:VEVENT';
+        $lines[] = 'UID:block-' . $r['id'] . '@' . $host;
+        $lines[] = 'DTSTAMP:' . $stamp;
+        $lines[] = 'DTSTART;VALUE=DATE:' . str_replace('-', '', $r['start']);
+        $lines[] = 'DTEND;VALUE=DATE:' . str_replace('-', '', $r['end_excl']);
+        $lines[] = 'SUMMARY:Not available';
+        $lines[] = 'END:VEVENT';
+    }
     $lines[] = 'END:VCALENDAR';
     return implode("\r\n", $lines) . "\r\n";
 }

@@ -251,3 +251,15 @@ a{color:var(--plum)}
 .loading{color:var(--muted);font-size:14px;padding:30px 0;text-align:center}
 .grid button.co{background:transparent;text-decoration:none;color:var(--ink);opacity:1;cursor:pointer}
 .prose h2{margin-top:8px}
+.grid button.deal{color:var(--olive);font-weight:700;position:relative}
+.grid button.deal::after{content:"%";position:absolute;top:2px;right:4px;font-size:9px;font-weight:700;color:var(--olive)}
+.legend .dealkey{background:color-mix(in srgb,var(--olive) 30%,transparent);border:1px solid var(--olive)}
+.sum s{color:var(--muted)} .sum .offer{font-size:11px;color:var(--olive);text-transform:uppercase;letter-spacing:.05em}
+fieldset.rates{border:0;padding:0;margin:4px 0 10px}
+fieldset.rates legend{font-weight:600;font-size:14px;margin-bottom:6px}
+.ratebox{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;font-size:13px;cursor:pointer}
+.ratebox:has(input:checked){border-color:var(--plum);background:color-mix(in srgb,var(--plum) 7%,transparent)}
+.ratebox input{margin-top:3px}
+.pay input[type=checkbox],.pay input[type=radio]{width:auto;margin:0;flex:none;accent-color:var(--plum)}
+.pay label.check{align-items:flex-start}
+.pay label.check input{margin-top:4px}

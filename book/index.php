@@ -9,7 +9,7 @@ if (!empty($_GET['cancelled']) && preg_match('/^BD-[A-Z0-9]{6}$/', $_GET['cancel
 $p = [
     'path' => '/book/',
     'title' => 'Book An Bothán Dubh Direct | Off-Grid Cabin, Ballina, Mayo',
-    'description' => 'Check availability and book An Bothán Dubh direct: €130 a night Mon to Thu, €140 Fri to Sun, no cleaning fee and no booking-site service fee. Pets €10 a night.',
+    'description' => 'Check availability and book An Bothán Dubh direct: from €' . base_rate('weekday') . ' a night, no cleaning fee and no booking-site service fee. Pets €10 a night.',
     'image' => '/photos/00.webp',
 ];
 page_head($p);
@@ -29,8 +29,8 @@ page_head($p);
           <div><h3>Arrival</h3><p>Check-in 3pm to 9pm, self check-in with a lockbox. Please let us know your arrival time. Check-out by 11am.</p></div>
           <div><h3>House rules</h3><p>Up to 2 guests. Pets welcome. No smoking or vaping on or near the property. No parties. Quiet hours 10pm to 7am.</p></div>
           <div><h3>Pets</h3><p>€10 per night, however many pets you bring. Dogs off the bed, please.</p></div>
-          <div><h3>Cancellation</h3><p>Free cancellation with a full refund for 24 hours after booking. After that, the booking is non-refundable.</p></div>
-          <div><h3>Prices</h3><p>€130 a night Monday to Thursday, €140 a night Friday to Sunday. Minimum 2 nights. No cleaning fee.</p></div>
+          <div><h3>Cancellation</h3><p>Choose your rate when you book.</p><p><b>Flexible:</b> full refund up to 5 days before check-in. After that, the first night is non-refundable and 50% of the other nights is refunded.</p><p><b>Non-refundable:</b> <?= nonref_pct() ?>% cheaper, no refund.</p><p>Both: free cancellation within 24 hours of booking if you booked at least 7 days before check-in.</p></div>
+          <div><h3>Prices</h3><p>From €<?= base_rate('weekday') ?> a night Monday to Thursday, €<?= base_rate('weekend') ?> a night Friday to Sunday. Some dates have special prices. Minimum <?= (int) cfg('min_nights') ?> nights. No cleaning fee.</p></div>
           <div><h3>Payment</h3><p>Pay in full by card through Stripe. You get a confirmation email straight away, and the lockbox code 2 days before you arrive.</p></div>
         </div>
       </section>

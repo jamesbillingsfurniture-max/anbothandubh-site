@@ -19,7 +19,8 @@ page_head($p);
     </div>
   </div>
   <p class="small" style="margin:14px 0 0"><b>An Bothán Dubh</b> (say it <i>“un bo-HAWN duv”</i>) is Irish for <i>the black cabin</i>.</p>
-  <div class="ratings" style="margin-top:12px"><span class="rating"><b>★ 4.97</b> 34 Airbnb reviews · Superhost</span><span class="rating"><b>9.5</b> Exceptional · 17 Booking.com reviews</span></div>
+  <?php $R = require APP_DIR . '/reviews.php'; $ra = $R['ratings']; ?>
+  <div class="ratings" style="margin-top:12px"><span class="rating"><b>★ <?= h($ra['airbnb']['score']) ?></b> <?= (int) $ra['airbnb']['count'] ?> Airbnb reviews · <?= h($ra['airbnb']['extra']) ?></span><span class="rating"><b><?= h($ra['booking']['score']) ?></b> <?= h($ra['booking']['label']) ?> · <?= (int) $ra['booking']['count'] ?> Booking.com reviews</span></div>
 
   <section class="hl">
     <div><img src="/photos/38-s.webp" alt="Sunset over the fields beside the cabin" loading="lazy"><h2 style="font-size:21px;margin:0 0 4px">Silence and real darkness</h2><p>No traffic, no street lights. Birdsong by day, a sky full of stars by night, and Mayo Dark Sky Park within reach.</p></div>
@@ -41,10 +42,11 @@ page_head($p);
   <section>
     <h2>What guests say about An Bothán Dubh</h2>
     <div class="reviews">
-      <figure><blockquote>“The location was beautiful, so peaceful. The cabin was spotlessly clean and lovely decor. The host made us feel so welcome with a nice hand written note and fresh lemon water on arrival!”</blockquote><figcaption>Caroline, United Kingdom · Booking.com</figcaption></figure>
-      <figure><blockquote>“The cabin was extremely cosy and had fabulous facilities! The shower was amazing, the bed was very very comfy. The decking is a beautiful spot for coffee in the morning.”</blockquote><figcaption>Ryan, United Kingdom · Booking.com</figcaption></figure>
-      <figure><blockquote>“It was a lovely spot, quiet and serene. We loved Sadie! The decor was great, good selection of books.”</blockquote><figcaption>Kirstine, Australia · Booking.com</figcaption></figure>
+      <?php $pool = $R['reviews']; shuffle($pool); foreach (array_slice($pool, 0, 3) as $rv): ?>
+      <figure><blockquote>“<?= h($rv[0]) ?>”</blockquote><figcaption><?= h($rv[1]) ?>, <?= h($rv[2]) ?> · <?= h($rv[3]) ?></figcaption></figure>
+      <?php endforeach; ?>
     </div>
+    <?php if (cfg('google_review_url')): ?><p style="margin-top:16px"><a class="cta ghost" href="<?= h(cfg('google_review_url')) ?>" target="_blank" rel="noopener">Stayed with us? Leave a Google review</a></p><?php endif; ?>
   </section>
 
   <section class="band">

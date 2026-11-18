@@ -46,6 +46,10 @@ return [
     // Admin page (/admin/) password. Make it long.
     'admin_password' => '',
 
+    // Google: link that opens the review box (or the profile share link), and the profile link.
+    'google_review_url'  => 'https://share.google/h6ajpFU5hHFzFK54y',
+    'google_profile_url' => 'https://share.google/h6ajpFU5hHFzFK54y',
+
     // Fáilte Ireland short-term letting registration number (shown in the footer).
     'str_number' => '',
 
@@ -54,7 +58,8 @@ return [
     'rate_weekend'     => 140,  // Fri, Sat, Sun nights
     'pet_fee'          => 10,   // per night, however many pets
     'min_nights'       => 2,
-    'max_nights'       => 28,
+    'max_nights'       => 27,   // 28+ nights = long stay, by WhatsApp
+    'nonref_discount'  => 10,   // % off for the non-refundable rate
     'months_ahead'     => 12,
     'min_days_notice'  => 1,    // 1 = earliest arrival is tomorrow
 ];

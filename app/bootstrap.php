@@ -59,6 +59,14 @@ function db(): PDO
         id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, day TEXT NOT NULL,
         name TEXT NOT NULL, visitor TEXT)");
     $pdo->exec("CREATE TABLE IF NOT EXISTS kv(k TEXT PRIMARY KEY, v TEXT)");
+    // Special prices for date ranges (start..end_excl), and owner-blocked dates.
+    $pdo->exec("CREATE TABLE IF NOT EXISTS rates(id INTEGER PRIMARY KEY AUTOINCREMENT, start TEXT NOT NULL, end_excl TEXT NOT NULL,
+        price INTEGER NOT NULL, label TEXT, offer INTEGER NOT NULL DEFAULT 0, min_nights INTEGER, created_at INTEGER)");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS blocks(id INTEGER PRIMARY KEY AUTOINCREMENT, start TEXT NOT NULL, end_excl TEXT NOT NULL, note TEXT, created_at INTEGER)");
+    $cols = array_column($pdo->query('PRAGMA table_info(bookings)')->fetchAll(), 'name');
+    foreach (['thanks_sent_at' => 'INTEGER', 'rate_type' => "TEXT NOT NULL DEFAULT 'flexible'", 'notes' => 'TEXT'] as $c => $t) {
+        if (!in_array($c, $cols, true)) $pdo->exec("ALTER TABLE bookings ADD COLUMN $c $t");
+    }
     $pdo->exec("CREATE INDEX IF NOT EXISTS hits_day ON hits(day)");
     return $pdo;
 }

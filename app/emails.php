@@ -11,6 +11,7 @@ function booking_rows(array $b): array
         ['Guests', $b['guests'] . ($b['pets'] ? ', with pets' : '')],
     ];
     if ($b['arrival_time']) $rows[] = ['Expected arrival', $b['arrival_time']];
+    $rows[] = ['Rate', ($b['rate_type'] ?? 'flexible') === 'nonref' ? 'Non-refundable (' . nonref_pct() . '% off)' : 'Flexible'];
     $rows[] = ['Paid', euro((int) $b['amount_cents'])];
     return $rows;
 }
@@ -25,7 +26,7 @@ function send_booking_emails(array $b, bool $clash = false): void
     $intro = '<p>Thank you for booking An Bothán Dubh direct. Your stay is confirmed and paid.</p>';
     $after = '<p><b>What happens next.</b> Two days before you arrive we\'ll email you the lockbox code and directions. Check-in is self check-in from 3pm to 9pm.</p>'
         . '<p><b>Good to know.</b> The cabin runs on solar power: one socket, up to 500 watts, so please don\'t plug in high-power items like hair dryers or kettles (there\'s a kettle for the gas hob). No Wi-Fi or TV, but good phone signal. Our sheepdog Sadie and our cat live with us at our house and may wander over: please don\'t feed them or let them in.</p>'
-        . '<p><b>Cancellation.</b> Free cancellation with a full refund within 24 hours of booking. After that, the booking is non-refundable.</p>'
+        . '<p><b>Cancellation.</b> ' . h(policy_text((string) ($b['rate_type'] ?? 'flexible'))) . ' To cancel, message us on WhatsApp.</p>'
         . '<p>Questions? Just reply to this email or <a href="' . $wa . '" style="color:#7A3D4B">message us on WhatsApp</a> (086 346 8725).</p>';
     $rows = booking_rows($b);
     send_mail($b['email'], "Booking confirmed: An Bothán Dubh, " . nice_date($b['arrive'], false) . ' (' . $b['ref'] . ')',
@@ -79,6 +80,51 @@ function send_due_lockbox_emails(): int
     foreach ($s->fetchAll() as $b) {
         if (send_lockbox_email($b)) {
             db()->prepare('UPDATE bookings SET lockbox_sent_at=? WHERE ref=?')->execute([time(), $b['ref']]);
+            $n++;
+        }
+    }
+    return $n;
+}
+
+/** Guest email when James moves a booking to new dates in /admin/. */
+function send_dates_changed_email(array $b): bool
+{
+    $first = trim(explode(' ', (string) $b['name'])[0]);
+    $title = 'Your new dates, ' . $first;
+    $intro = '<p>As agreed, your stay at An Bothán Dubh has moved to new dates. Here are the updated details.</p>';
+    $rows = booking_rows($b);
+    $after = '<p>The lockbox code and directions will follow 2 days before you arrive. Questions? <a href="https://wa.me/353863468725" style="color:#7A3D4B">Message us on WhatsApp</a>.</p>';
+    return send_mail($b['email'], 'Updated booking: An Bothán Dubh, ' . nice_date($b['arrive'], false) . ' (' . $b['ref'] . ')',
+        email_layout($title, $intro, $rows, $after), email_text($title, $intro, $rows, $after));
+}
+
+/** After the stay: thank the guest and ask for a Google review. */
+function send_thankyou_email(array $b): bool
+{
+    $first = trim(explode(' ', (string) $b['name'])[0]);
+    $title = 'Thank you for staying, ' . $first;
+    $intro = '<p>Thank you for staying at An Bothán Dubh. We hope you enjoyed the quiet, the dark skies and the walks.</p>';
+    $url = (string) cfg('google_review_url');
+    $after = ($url
+        ? '<p>If you have a minute, a short Google review would mean a lot to us. It helps other people find the cabin.</p>'
+          . '<p><a href="' . h($url) . '" style="display:inline-block;background:#7A3D4B;color:#fff;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700">Leave a Google review</a></p>'
+        : '')
+        . '<p>We\'d love to have you back. Book direct any time at <a href="' . h(rtrim((string) cfg('base_url'), '/')) . '/book/" style="color:#7A3D4B">anbothandubh.ie</a> for the best price.</p>'
+        . '<p>If you took photos, tag them <b>#AnBothanDubh</b> so we can share them.</p>';
+    return send_mail($b['email'], 'Thank you for staying at An Bothán Dubh',
+        email_layout($title, $intro, [], $after), email_text($title, $intro, [], $after));
+}
+
+/** Thank-you emails go the day after departure, from 10am (run by the hourly cron). */
+function send_due_thankyou_emails(bool $anyTime = false): int
+{
+    if (!$anyTime && (int) date('G') < 10) return 0;
+    $s = db()->prepare("SELECT * FROM bookings WHERE status='paid' AND thanks_sent_at IS NULL AND depart < ? AND depart >= ?");
+    $s->execute([today()->format('Y-m-d'), today()->modify('-3 day')->format('Y-m-d')]);
+    $n = 0;
+    foreach ($s->fetchAll() as $b) {
+        if (send_thankyou_email($b)) {
+            db()->prepare('UPDATE bookings SET thanks_sent_at=? WHERE ref=?')->execute([time(), $b['ref']]);
             $n++;
         }
     }

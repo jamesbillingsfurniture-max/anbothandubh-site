@@ -68,7 +68,7 @@ function page_foot(array $p, array $scripts = []): void
     ?>
 </main>
 <footer><div class="wrap">
-  <div class="social"><span class="tag">#AnBothanDubh</span><span>Staying with us? Tag your photos so we can share them.</span><div class="share" id="share" data-site="<?= h($base) ?>"><b>Share:</b></div></div>
+  <div class="social"><span class="tag">#AnBothanDubh</span><span>Staying with us? Tag your photos so we can share them.</span><?php if (cfg('google_review_url')): ?><a href="<?= h(cfg('google_review_url')) ?>" target="_blank" rel="noopener">★ Leave us a Google review</a><?php endif; ?><div class="share" id="share" data-site="<?= h($base) ?>"><b>Share:</b></div></div>
   <div class="social"><b style="color:var(--ink)">Follow us</b><a href="https://www.instagram.com/anbothandubh" target="_blank" rel="noopener">Instagram @anbothandubh</a><a href="https://www.facebook.com/anbothandubh" target="_blank" rel="noopener">Facebook @anbothandubh</a></div>
   <div class="social"><span>An Bothán Dubh · off-grid cabin, Attymass, Ballina, Co. Mayo</span><span>Book direct with the host · card payments by Stripe</span><span class="small">Fáilte Ireland short-term letting registration no.: <?= cfg('str_number') ? h(cfg('str_number')) : 'to follow' ?></span></div>
 </div></footer>
@@ -98,7 +98,7 @@ function lodging_jsonld(): array
         'image' => [$base . '/photos/15.webp', $base . '/photos/37.webp', $base . '/photos/00.webp', $base . '/photos/29.webp', $base . '/photos/35.webp', $base . '/photos/39.webp', $base . '/photos/07.webp', $base . '/photos/38.webp'],
         'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Attymass, Ballina', 'addressRegion' => 'Co. Mayo', 'addressCountry' => 'IE'],
         'telephone' => '+353863468725',
-        'priceRange' => '€130–€140 per night',
+        'priceRange' => 'From €' . min(base_rate('weekday'), base_rate('weekend')) . ' per night',
         'petsAllowed' => true,
         'checkinTime' => '15:00', 'checkoutTime' => '11:00',
         'numberOfRooms' => 1,
@@ -108,6 +108,6 @@ function lodging_jsonld(): array
             $amen('Off-grid solar power'), $amen('Hot shower'), $amen('Kitchen with gas hob and oven'), $amen('Gas stove heating'),
             $amen('Private deck and garden'), $amen('Free parking'), $amen('Pets allowed'), $amen('Self check-in'), $amen('Wi-Fi', false), $amen('TV', false),
         ],
-        'sameAs' => ['https://www.instagram.com/anbothandubh', 'https://www.facebook.com/anbothandubh'],
+        'sameAs' => array_values(array_filter(['https://www.instagram.com/anbothandubh', 'https://www.facebook.com/anbothandubh', (string) cfg('google_profile_url')])),
     ];
 }

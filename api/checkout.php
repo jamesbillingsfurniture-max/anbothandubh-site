@@ -18,6 +18,7 @@ $data = [
     'phone' => $clean('phone', 30),
     'arrival_time' => $clean('arrival_time', 20),
     'message' => trim(mb_substr((string) ($in['message'] ?? ''), 0, 600)),
+    'rate_type' => ($in['rate_type'] ?? '') === 'nonref' ? 'nonref' : 'flexible',
 ];
 
 $errors = [];

@@ -263,3 +263,4 @@ fieldset.rates legend{font-weight:600;font-size:14px;margin-bottom:6px}
 .pay input[type=checkbox],.pay input[type=radio]{width:auto;margin:0;flex:none;accent-color:var(--plum)}
 .pay label.check{align-items:flex-start}
 .pay label.check input{margin-top:4px}
+.hero img.hero-cabin{object-position:center 40%}

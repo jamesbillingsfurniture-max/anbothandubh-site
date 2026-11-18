@@ -11,7 +11,7 @@ page_head($p);
 ?>
 <div class="wrap">
   <div class="hero">
-    <img src="/photos/15.webp" alt="The cabin deck with a gravel path curving towards the Ox Mountains" width="1600" height="1200" fetchpriority="high">
+    <img src="/photos/39.webp" alt="The black corrugated cabin with solar panels on the roof, among the trees" width="1200" height="1600" fetchpriority="high" class="hero-cabin">
     <div class="hero-text">
       <h1>Silence, darkness and tranquillity under the Ox Mountains</h1>
       <p>A solar-powered, off-grid cabin for two, 7 km from Ballina in Co. Mayo. Pets welcome.</p>
@@ -24,7 +24,7 @@ page_head($p);
 
   <section class="hl">
     <div><img src="/photos/38-s.webp" alt="Sunset over the fields beside the cabin" loading="lazy"><h2 style="font-size:21px;margin:0 0 4px">Silence and real darkness</h2><p>No traffic, no street lights. Birdsong by day, a sky full of stars by night, and Mayo Dark Sky Park within reach.</p></div>
-    <div><img src="/photos/39-s.webp" alt="The black cabin with solar panels on the roof" loading="lazy"><h2 style="font-size:21px;margin:0 0 4px">Off-grid, on solar</h2><p>Powered by the sun and heated by a gas stove. No Wi-Fi or TV, but good phone signal if you need it.</p></div>
+    <div><img src="/photos/34-s.webp" alt="The gas stove lit inside the cabin" loading="lazy"><h2 style="font-size:21px;margin:0 0 4px">Off-grid, on solar</h2><p>Powered by the sun and heated by a gas stove. No Wi-Fi or TV, but good phone signal if you need it.</p></div>
     <div><img src="/photos/16-s.webp" alt="View over the fields towards the mountains" loading="lazy"><h2 style="font-size:21px;margin:0 0 4px">A base for the Wild Atlantic Way</h2><p>Walk from the door, hike the Ox Mountains, fish the Moy, or drive to Enniscrone, Belmullet, Achill or Sligo.</p></div>
   </section>
 

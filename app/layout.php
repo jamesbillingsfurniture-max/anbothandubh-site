@@ -15,7 +15,7 @@ function page_head(array $p): void
     // $p: path, title, description, image (optional), jsonld (optional array of arrays), noindex
     $base = rtrim((string) cfg('base_url'), '/');
     $canonical = $base . $p['path'];
-    $img = $base . ($p['image'] ?? '/photos/15.webp');
+    $img = $base . ($p['image'] ?? '/photos/39.webp');
     if (empty($p['noindex'])) record_hit($p['path']);
     header('Content-Type: text/html; charset=utf-8');
     $nav = [['/', 'Home'], ['/the-cabin/', 'The Cabin'], ['/things-to-do-ballina/', 'The Area'], ['/contact/', 'Contact &amp; FAQ']];
@@ -95,7 +95,7 @@ function lodging_jsonld(): array
         'name' => 'An Bothán Dubh',
         'description' => 'A solar-powered, off-grid cabin for two in Attymass, 7 km from Ballina, Co. Mayo. Dark skies, walks from the door, pets welcome.',
         'url' => $base . '/',
-        'image' => [$base . '/photos/15.webp', $base . '/photos/37.webp', $base . '/photos/00.webp', $base . '/photos/29.webp', $base . '/photos/35.webp', $base . '/photos/39.webp', $base . '/photos/07.webp', $base . '/photos/38.webp'],
+        'image' => [$base . '/photos/39.webp', $base . '/photos/15.webp', $base . '/photos/37.webp', $base . '/photos/00.webp', $base . '/photos/29.webp', $base . '/photos/35.webp', $base . '/photos/07.webp', $base . '/photos/38.webp'],
         'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Attymass, Ballina', 'addressRegion' => 'Co. Mayo', 'addressCountry' => 'IE'],
         'telephone' => '+353863468725',
         'priceRange' => 'From €' . min(base_rate('weekday'), base_rate('weekend')) . ' per night',

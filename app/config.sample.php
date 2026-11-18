@@ -47,7 +47,7 @@ return [
     'admin_password' => '',
 
     // Google: link that opens the review box (or the profile share link), and the profile link.
-    'google_review_url'  => 'https://share.google/h6ajpFU5hHFzFK54y',
+    'google_review_url'  => 'https://g.page/r/CdTWtyRCH8nWEBM/review',
     'google_profile_url' => 'https://share.google/h6ajpFU5hHFzFK54y',
 
     // Fáilte Ireland short-term letting registration number (shown in the footer).

@@ -89,6 +89,7 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
 .cday.bookingcom,.ckey.bookingcom{background:#1C4FA0;color:#fff;border-color:#1C4FA0}.cday.direct,.ckey.direct{background:var(--plum);color:var(--onaccent);border-color:var(--plum)}
 .cday.hold{background:color-mix(in srgb,var(--plum) 35%,transparent)}.cday.block,.ckey.block{background:#8A8A8A;color:#fff;border-color:#8A8A8A}
 .ckey{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line)}.ckey.free{background:var(--surface)}
+.calnav{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px}.cbtn{display:inline-block;padding:9px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;font-weight:600;font-size:14px}.cbtn:hover{border-color:var(--plum);color:var(--plum)}
 .cday.past{opacity:.45}.cday.today{outline:2px solid var(--tan)}.cday.on{outline:2px solid var(--ink)}
 </style></head><body><div class="wrap">
 <h1 style="font-size:30px">An Bothán Dubh admin</h1>
@@ -132,8 +133,8 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
   $todayK = date('Y-m-d');
   ?>
   <div class="box"><h2 style="font-size:20px">Calendar</h2>
-  <p class="small" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center"><a href="?m=<?= $m0->modify('-1 month')->format('Y-m') ?>">‹ Earlier</a> <a href="?m=<?= $m0->modify('+1 month')->format('Y-m') ?>">Later ›</a> <a href="/admin/">Today</a>
-  <span class="ckey airbnb">Airbnb</span><span class="ckey bookingcom">Booking.com</span><span class="ckey direct">Direct</span><span class="ckey block">Blocked by you</span><span class="ckey free">Free (price)</span></p>
+  <div class="calnav"><a class="cbtn" href="?m=<?= $m0->modify('-1 month')->format('Y-m') ?>">‹ Previous month</a><a class="cbtn" href="/admin/">Today</a><a class="cbtn" href="?m=<?= $m0->modify('+1 month')->format('Y-m') ?>">Next month ›</a></div>
+  <p class="small" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="ckey airbnb">Airbnb</span><span class="ckey bookingcom">Booking.com</span><span class="ckey direct">Direct</span><span class="ckey block">Blocked by you</span><span class="ckey free">Free (price)</span></p>
   <div class="cal2">
   <?php for ($mi = 0; $mi < 2; $mi++): $mm = $m0->modify("+$mi month"); $lead = ((int) $mm->format('N')) - 1; $days = (int) $mm->format('t'); ?>
     <div><h3 style="font-size:16px;margin:4px 0 8px"><?= h($mm->format('F Y')) ?></h3><div class="cgrid">
@@ -147,6 +148,7 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
   <?php endfor; ?>
   </div>
   <p class="small" id="calinfo" style="min-height:1.4em;margin-top:10px">Tap a day for details.</p>
+  <p class="small">Last download: <?php foreach ((array) cfg('ical_import') as $name => $url): $f = ical_cache_file($name); ?><?= h($name) ?> <?= !$url ? 'not set up' : (is_file($f) ? date('j M H:i', filemtime($f)) : 'never') ?><?= ($cal[$name] ?? true) ? '' : ' ⚠ failed' ?> · <?php endforeach; ?></p>
   <script>document.querySelectorAll('.cday').forEach(function(b){b.onclick=function(){document.getElementById('calinfo').textContent=b.dataset.info;document.querySelectorAll('.cday.on').forEach(function(x){x.classList.remove('on')});b.classList.add('on')}})</script>
   </div>
 
@@ -197,9 +199,7 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
     <button>Block these nights</button></form>
   <p class="small">Blocked nights can't be booked on the website, and Airbnb and Booking.com block them too when they next check your calendar link (usually within a few hours).</p></div>
 
-  <div class="box"><h2 style="font-size:20px">Airbnb and Booking.com stays (from their calendars)</h2>
-  <p class="small">Last download: <?php foreach ((array) cfg('ical_import') as $name => $url): $f = ical_cache_file($name); ?><?= h($name) ?> <?= !$url ? 'not set up' : (is_file($f) ? date('j M H:i', filemtime($f)) : 'never') ?><?= ($cal[$name] ?? true) ? '' : ' ⚠ failed' ?> · <?php endforeach; ?></p>
-  <table><?php foreach (array_slice($ical, 0, 30) as $e): ?><tr><td><?= h(nice_date($e[1])) ?> → <?= h(nice_date($e[2])) ?></td><td><?= h($e[0]) ?></td><td class="small"><?= h($e[3]) ?></td></tr><?php endforeach; ?></table></div>
+
 
   <div class="box"><h2 style="font-size:20px">Your website calendar link</h2>
   <p>Paste this into Airbnb (Calendar › Availability › Connect calendars › Import) and Booking.com (Rates &amp; availability › Sync calendars) so direct bookings block those sites too:</p>

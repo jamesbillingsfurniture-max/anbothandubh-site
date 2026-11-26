@@ -80,7 +80,17 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
 <title>Admin | An Bothán Dubh</title><link rel="stylesheet" href="/assets/style.css">
 <style>.wrap{max-width:900px;padding-block:24px 60px}table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
 .pill{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--booked)}.pill.paid{background:var(--olive);color:var(--onaccent)}form.inline{display:inline}form.inline button{font:inherit;font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0}code{word-break:break-all;font-size:13px}.scroll{overflow-x:auto}</style></head><body><div class="wrap">
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0}code{word-break:break-all;font-size:13px}.scroll{overflow-x:auto}
+.cal2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.cgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.cdow{font-size:11px;color:var(--muted);text-align:center}
+.cday{all:unset;cursor:pointer;box-sizing:border-box;min-height:52px;border-radius:6px;padding:4px;display:flex;flex-direction:column;gap:2px;font-size:11px;line-height:1.2;overflow:hidden;border:1px solid var(--line)}
+.cday b{font-size:12px}.cday span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cday.free{background:var(--surface);color:var(--muted)}.cday.airbnb,.ckey.airbnb{background:#FF5A5F;color:#fff;border-color:#FF5A5F}
+.cday.bookingcom,.ckey.bookingcom{background:#1C4FA0;color:#fff;border-color:#1C4FA0}.cday.direct,.ckey.direct{background:var(--plum);color:var(--onaccent);border-color:var(--plum)}
+.cday.hold{background:color-mix(in srgb,var(--plum) 35%,transparent)}.cday.block,.ckey.block{background:#8A8A8A;color:#fff;border-color:#8A8A8A}
+.ckey{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line)}.ckey.free{background:var(--surface)}
+.cday.past{opacity:.45}.cday.today{outline:2px solid var(--tan)}.cday.on{outline:2px solid var(--ink)}
+</style></head><body><div class="wrap">
 <h1 style="font-size:30px">An Bothán Dubh admin</h1>
 <?php if (!$in): ?>
   <form method="post" class="pay" style="max-width:320px"><label class="lbl" for="pw">Password</label><input id="pw" type="password" name="password" autofocus><?php if ($err): ?><div class="err"><?= h($err) ?></div><?php endif; ?><button class="btn">Log in</button></form>
@@ -99,6 +109,46 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
 ?>
   <?php if (!empty($_SESSION['flash'])): ?><div class="err" style="margin-bottom:12px"><?= h($_SESSION['flash']) ?></div><?php unset($_SESSION['flash']); endif; ?>
   <p>Mode: <b><?= h($mode) ?></b> · <a href="?summary=1">Preview this week's Monday summary</a> · <a href="?logout=1">Log out</a></p>
+
+  <?php
+  // ---- Calendar: 2 months, colour per source (read-only) ----
+  $m0 = preg_match('/^\d{4}-\d{2}$/', (string) ($_GET['m'] ?? '')) ? new DateTimeImmutable($_GET['m'] . '-01') : new DateTimeImmutable(date('Y-m-01'));
+  $nightMap = [];
+  $put = function (string $a, string $d, string $type, string $label, string $info) use (&$nightMap) {
+      $first = true;
+      foreach (array_keys(nights_between($a, $d)) as $k) { if (!isset($nightMap[$k])) $nightMap[$k] = [$type, $first ? $label : '', $info]; $first = false; }
+  };
+  foreach (db()->query("SELECT * FROM bookings WHERE status IN ('paid','hold') AND depart >= date('now','-62 day')")->fetchAll() as $b) {
+      $fn = trim(explode(' ', (string) $b['name'])[0]);
+      $put($b['arrive'], $b['depart'], $b['status'] === 'paid' ? 'direct' : 'hold', $fn,
+          ($b['status'] === 'paid' ? 'Direct booking ' : 'Paying now (held) ') . $b['ref'] . ': ' . $b['name'] . ', ' . nice_date($b['arrive']) . ' → ' . nice_date($b['depart']) . ', ' . $b['nights'] . ' nights, ' . $b['guests'] . ' guests' . ($b['pets'] ? ' + pets' : '') . ', ' . euro((int) $b['amount_cents']));
+  }
+  foreach (db()->query('SELECT * FROM blocks')->fetchAll() as $r) {
+      $put($r['start'], $r['end_excl'], 'block', 'Blocked', 'Blocked by you: ' . nice_date($r['start']) . ' → last night ' . nice_date((new DateTimeImmutable($r['end_excl']))->modify('-1 day')->format('Y-m-d')) . ($r['note'] ? ' (' . $r['note'] . ')' : ''));
+  }
+  foreach (ical_events() as $e) {
+      $put($e[1], $e[2], $e[0] === 'Airbnb' ? 'airbnb' : 'bookingcom', $e[0] === 'Airbnb' ? 'Airbnb' : 'Booking', $e[0] . ': ' . nice_date($e[1]) . ' → ' . nice_date($e[2]) . ($e[3] ? ' · ' . $e[3] : ''));
+  }
+  $todayK = date('Y-m-d');
+  ?>
+  <div class="box"><h2 style="font-size:20px">Calendar</h2>
+  <p class="small" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center"><a href="?m=<?= $m0->modify('-1 month')->format('Y-m') ?>">‹ Earlier</a> <a href="?m=<?= $m0->modify('+1 month')->format('Y-m') ?>">Later ›</a> <a href="/admin/">Today</a>
+  <span class="ckey airbnb">Airbnb</span><span class="ckey bookingcom">Booking.com</span><span class="ckey direct">Direct</span><span class="ckey block">Blocked by you</span><span class="ckey free">Free (price)</span></p>
+  <div class="cal2">
+  <?php for ($mi = 0; $mi < 2; $mi++): $mm = $m0->modify("+$mi month"); $lead = ((int) $mm->format('N')) - 1; $days = (int) $mm->format('t'); ?>
+    <div><h3 style="font-size:16px;margin:4px 0 8px"><?= h($mm->format('F Y')) ?></h3><div class="cgrid">
+    <?php foreach (['M','T','W','T','F','S','S'] as $dw): ?><div class="cdow"><?= $dw ?></div><?php endforeach; ?>
+    <?php for ($i = 0; $i < $lead; $i++): ?><div></div><?php endfor; ?>
+    <?php for ($dd = 1; $dd <= $days; $dd++): $dt = $mm->setDate((int) $mm->format('Y'), (int) $mm->format('n'), $dd); $k = $dt->format('Y-m-d');
+      if (isset($nightMap[$k])) { [$t, $lab, $inf] = $nightMap[$k]; } else { $ni = night_info($dt); $t = 'free'; $lab = '€' . $ni['price'] . ($ni['offer'] ? ' %' : ''); $inf = nice_date($k) . ': free, €' . $ni['price'] . ' a night' . ($ni['label'] ? ' (' . $ni['label'] . ')' : '') . ($ni['offer'] ? ', special offer' : ''); }
+      $past = $k < $todayK; ?>
+      <button type="button" class="cday <?= $t ?><?= $past ? ' past' : '' ?><?= $k === $todayK ? ' today' : '' ?>" data-info="<?= h($inf) ?>"><b><?= $dd ?></b><span><?= h($lab) ?></span></button>
+    <?php endfor; ?></div></div>
+  <?php endfor; ?>
+  </div>
+  <p class="small" id="calinfo" style="min-height:1.4em;margin-top:10px">Tap a day for details.</p>
+  <script>document.querySelectorAll('.cday').forEach(function(b){b.onclick=function(){document.getElementById('calinfo').textContent=b.dataset.info;document.querySelectorAll('.cday.on').forEach(function(x){x.classList.remove('on')});b.classList.add('on')}})</script>
+  </div>
 
   <div class="box"><h2 style="font-size:20px">Upcoming direct bookings</h2><div class="scroll"><table><tr><th>Dates</th><th>Guest</th><th>Paid</th><th>Emails</th><th></th></tr>
   <?php foreach ($upcoming as $b): ?><tr><td><?= h(nice_date($b['arrive'], false)) ?> → <?= h(nice_date($b['depart'], false)) ?><br><span class="small"><?= (int) $b['nights'] ?> nights · <?= h($b['ref']) ?></span></td>
@@ -149,7 +199,7 @@ if ($in && isset($_GET['summary'])) { echo weekly_summary()['html']; exit; }
 
   <div class="box"><h2 style="font-size:20px">Airbnb and Booking.com stays (from their calendars)</h2>
   <p class="small">Last download: <?php foreach ((array) cfg('ical_import') as $name => $url): $f = ical_cache_file($name); ?><?= h($name) ?> <?= !$url ? 'not set up' : (is_file($f) ? date('j M H:i', filemtime($f)) : 'never') ?><?= ($cal[$name] ?? true) ? '' : ' ⚠ failed' ?> · <?php endforeach; ?></p>
-  <table><?php foreach (array_slice($ical, 0, 30) as $e): ?><tr><td><?= h(nice_date($e[1], false)) ?> → <?= h(nice_date($e[2], false)) ?></td><td><?= h($e[0]) ?></td><td class="small"><?= h($e[3]) ?></td></tr><?php endforeach; ?></table></div>
+  <table><?php foreach (array_slice($ical, 0, 30) as $e): ?><tr><td><?= h(nice_date($e[1])) ?> → <?= h(nice_date($e[2])) ?></td><td><?= h($e[0]) ?></td><td class="small"><?= h($e[3]) ?></td></tr><?php endforeach; ?></table></div>
 
   <div class="box"><h2 style="font-size:20px">Your website calendar link</h2>
   <p>Paste this into Airbnb (Calendar › Availability › Connect calendars › Import) and Booking.com (Rates &amp; availability › Sync calendars) so direct bookings block those sites too:</p>
